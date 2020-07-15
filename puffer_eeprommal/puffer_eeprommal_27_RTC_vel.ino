@@ -1,3 +1,8 @@
+/*Helló,előre jelzem, hogy nemtudok programozni(sem),ha te tudsz,
+akkor ne olvasd végig, mert az neked nem lesz jó :-)
+(Nekem megfelel, és működik amit akartam)
+*/
+
 #include<avr/wdt.h>
 
 #include <Wire.h> 
@@ -13,18 +18,10 @@
 #include <LiquidCrystal_I2C.h>
 
 LiquidCrystal_I2C lcd(0x27,20,4);  // set the LCD address to 0x27 for a 16 chars and 2 line display
-//#include <LiquidCrystal.h>
-//LiquidCrystal lcd (7, 6, 5, 4, 3, 2);
-
-
 
 RTC_DS3231 rtc;
 DS3231 clock;
 RTCDateTime dt;
-
-
-
-
 
 /*-----( Declare Constants and Pin Numbers )-----*/
 #define ONE_WIRE_BUS_PIN 12
@@ -32,7 +29,7 @@ OneWire oneWire(ONE_WIRE_BUS_PIN);
 
 DallasTemperature sensors(&oneWire);
 
-//Peti
+//Pet
 /*
 DeviceAddress KOLL = { 0x28, 0xF2, 0xAF, 0x4D, 0x08, 0x00, 0x00, 0x06 };
 DeviceAddress KINT = { 0x28, 0x82, 0x2F, 0x4E, 0x08, 0x00, 0x00, 0xDD };
@@ -42,7 +39,7 @@ DeviceAddress PK2 = { 0x28, 0xA7, 0x8B, 0x4D, 0x08, 0x00, 0x00, 0x24 };
 DeviceAddress PA1 = { 0x28, 0xCB, 0xEE, 0x4D, 0x08, 0x00, 0x00, 0x59 };
 */
 
-//munka
+//mun
 
 DeviceAddress KOLL = { 0x28, 0x98, 0x3C, 0x79, 0xA2, 0x01, 0x03, 0x0F }; 
 DeviceAddress KINT = { 0x28, 0xE1, 0xE7, 0x79, 0xA2, 0x01, 0x03, 0x2F };
@@ -52,7 +49,7 @@ DeviceAddress PK2 = { 0x28, 0xAF, 0x96, 0x79, 0xA2, 0x00, 0x03, 0x2D };
 DeviceAddress PA1 = { 0x28, 0xFF, 0xFF, 0xC8, 0x6D, 0x18, 0x01, 0xD5 };
 
 
-//otthon
+//ott
 /*
 DeviceAddress KOLL = { 0x28, 0x59, 0x30, 0x79, 0xA2, 0x01, 0x03, 0x86 }; 
 DeviceAddress KINT = { 0x28, 0x55, 0x5E, 0x79, 0xA2, 0x00, 0x03, 0x8C };
@@ -62,13 +59,11 @@ DeviceAddress PK2 = { 0x28, 0x67, 0xFB, 0x79, 0xA2, 0x00, 0x03, 0xEE };
 DeviceAddress PA1 = { 0x28, 0x8F, 0xBE, 0x79, 0xA2, 0x00, 0x03, 0x5D };
 */
 
-
 //encoder
 int encoder0PinA = 7;
 int encoder0PinB = 6;
 int encoder0PinALast = LOW;
 int ZSIK = LOW;
-//
 
 int ev = 2020;
 byte honap = 03;
@@ -100,31 +95,20 @@ byte FOLYSZAK; //folyamatosan, vagy szakaszosan menjen a ház fűtése
 byte A = 0;
 byte B = 0;
 byte C = 0;
-//byte D = 0;
 byte BB;  //menny időzitést szeretnél
 byte I; 
-//byte z;
 
-byte G; //unixkiirhoz hogy csak eccer fusson le
-
-
+byte G; //unixkiirhoz,hogy csak egyszer fusson le
 
 byte teszt = 128;
-//byte memory = 128;
 byte x;
-//byte q = 1;
 byte n;
 byte m;
 
 byte ORA;
 byte PERC;
-//byte y = 1;
-
-
-
 
 byte b = 0;
-
 
 byte PUFFIT1B = EEPROM.read(1);
 byte PUFFIT2B = EEPROM.read(2);
@@ -139,12 +123,7 @@ byte PercI;
 byte OraV;      //Óra vége Elektromos Fűtés 
 byte PercV;
 
-
-
 byte AA;
-//byte AramSZ = 1;
-//byte Aram[] = {1,2,3,4,5,6,7,8,9,10,11,12};
-
 
 byte BEKI[] = {1,2,3,4,5,6,7,8,9,10,11,12};
 byte OraIF[] = {1,2,3,4,5,6,7,8,9,10,11,12};
@@ -160,10 +139,6 @@ byte PercVegeElektromosFutes;
 unsigned long IAO2;
 unsigned long IIO2;
 unsigned long IVO2;
-
-
-
-
 
 unsigned long ardup;
 byte ORAAktualis;
@@ -199,8 +174,6 @@ const byte MINUS = 10;      //gomb minusz
 const byte ENTER = 9;      //gomb enter
 const byte PLUS = 8;        //gomb plusz
 
-//ennyi lehet max, az valamelyik betüt kicseréltem 
-
 byte uu[8] = {
 	0b00101,
 	0b01010,
@@ -235,6 +208,7 @@ byte oo[8] = {
 	0b10000,
 	0b11100
 };
+
 byte aa[8] = {
 	0b00010,
 	0b00100,
@@ -245,6 +219,7 @@ byte aa[8] = {
 	0b01111,
 	0b00000
 };
+
 byte oa[8] = {
 	0b01010,
 	0b00000,
@@ -255,6 +230,7 @@ byte oa[8] = {
 	0b01110,
 	0b00000
 };
+
 byte ee[8] = {
 	0b00010,
 	0b00100,
@@ -265,6 +241,7 @@ byte ee[8] = {
 	0b01110,
 	0b00000
 };
+
 byte oi[8] = {
 	0b00010,
 	0b00100,
@@ -275,6 +252,7 @@ byte oi[8] = {
 	0b01110,
 	0b00000
 };
+
 byte ii[8] = {
 	0b00010,
 	0b00100,
@@ -290,7 +268,6 @@ byte ii[8] = {
 
 void setup()   /****** SETUP: RUNS ONCE ******/
 {
-  // start serial port to show results
  Serial.begin(9600);
  Wire.begin();
  clock.begin();
@@ -336,7 +313,7 @@ digitalWrite (RELEKE, LOW);
 digitalWrite (RELEFUTES, LOW);
 
   lcd.createChar(7, uu); //ű betű
-  lcd.createChar(6, oo); //megbasz az áram jel
+  lcd.createChar(6, oo); //az áram jel
   lcd.createChar(5, aa); //á betű
   lcd.createChar(4, oa); //ö betű
   lcd.createChar(3, uz); //ü betű
@@ -627,7 +604,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  delay(500);
                                  
                                 rtc.adjust(DateTime(ev, honap, nap, ora, perc, 00));
-                                //Serial.println("-----sadsda");
 
 
                                  do
@@ -783,7 +759,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                   delay(1500);
                   lcd.clear();
                   } 
-                  //service vege
                   //service vege                
          
           
@@ -799,8 +774,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                     {  
                       lcd.setCursor(0,0);
                       lcd.print("Puffer Maximum:"); 
-                     // lcd.setCursor(0,1);
-                     // lcd.print("MIN/MAX:60-90");
                       lcd.setCursor(5,2);             
                       lcd.print(PUFFMAX); 
                       
@@ -845,10 +818,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                 {
                               lcd.setCursor(0,0);
                               lcd.print("Puffer Teteje_1:");
-                             // lcd.setCursor(0,2);
-                            //  lcd.print("30C \002s 90C k\004z\004tt");
-                           //   lcd.setCursor(0,3);
-                            //  lcd.print("\005llithat\001.");
                               lcd.setCursor(7,1);
                               lcd.print(PUFFIT1B);
                               do
@@ -1314,7 +1283,6 @@ if(MENUV == 2)
           delay(5);
           EEPROM_writeAnything(36, (byte)PercI);
           delay(500);
-       //----------------     
       
           do
           {    
@@ -2046,9 +2014,6 @@ if(MENUV == 2)
           }//while vége
         
          x = 1;
-         //SOK = 1;
-         //EEPROM_writeAnything(43, (byte)SOK);     
-         //delay(100);
        
          
   }
@@ -2062,7 +2027,6 @@ if(MENUV == 2)
                   
           wdt_enable (WDTO_8S);
           delay(500);
-          //asm volatile ("  jmp 0");   //soft reset
   
   
 } //MENUV == 3 vege  
@@ -2075,22 +2039,11 @@ if(MENUV == 2)
    
 
 int KOLLM = sensors.getTempC(KOLL);
-//byte KOLLM = 55;
-
 int KINTM = sensors.getTempC(KINT);
-//int KINTM = -35.5;
-
 byte PF4M = sensors.getTempC(PT4);   
-//byte PF4M = 55;
-
 byte PF3M = sensors.getTempC(PT3);
-//byte PF3M = 54;
-
 byte PF2M = sensors.getTempC(PK2);
-//byte PF2M = 52;
-
 byte PF1M = sensors.getTempC(PA1);
-//byte PF1M = 45;
 
 
 
@@ -2201,7 +2154,6 @@ if (KOLLM >= SENSOR + 5 )
 
 //napkollektor keringető feltételek
 
-//   60        5          55      60        55           30          55      80 
 if (KOLLM - KOLLHISZB >= SENSOR && KOLLM - KOLLHISZB >= KOLLEKTORB && SENSOR < PUFFKISENSOR && PF4M < PUFFMAX)
 {
   val = 1;
@@ -2226,19 +2178,12 @@ if (KOLLM - KOLLHISZB >= SENSOR && KOLLM - KOLLHISZB >= KOLLEKTORB && SENSOR < P
   delay(50);
   analogWrite(PwmKim, PwmKitolt);
   
- 
-
-  
-  //Serial.println("PWM_BE");
- 
-  
 
 }
 
 
 else
 {
-//       60       55      60       55          60        30           5           55       80
   if ( KOLLM <= SENSOR || KOLLM <= SENSOR + 2 || KOLLM <= KOLLEKTORB - KOLLHISZB || SENSOR >= PUFFKISENSOR || PF4M >= PUFFMAX )
     {
       val = 0;
@@ -2246,8 +2191,6 @@ else
       lcd.print("Koll:KI    ");
       delay(50);
       analogWrite(PwmKim, 0);
- 
-  //Serial.println("PWM_KI");
     }
 }
 
@@ -2380,7 +2323,6 @@ if ( FUTESBEKI == 1 ) //A1 if kezd
                     A = 0;
                     AA = m ;
                     VISSZA = 0;
-                    //AramSZ = 0;
                  } 
                   }
                   
@@ -2500,7 +2442,6 @@ if ( PF4M < PUFFIT1B || PF2M < PUFFIKB )
 //Elektromos fűtéshez a relé
 
 //időzités
-          //****************************************
    
           
 if (ELEKTFBEKI == 1)
