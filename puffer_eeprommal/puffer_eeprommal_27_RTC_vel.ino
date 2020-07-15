@@ -170,64 +170,34 @@ byte ORAAktualis;
 byte PercAktualis;
 byte SecAktualis;
 unsigned long ido;
-//float RTCTemp ;
 unsigned long UniX;
-//unsigned long UniXAktIdo;
-//unsigned long UniXKIIdo;
 byte KK1,KK2,KK3,KK4,KK5,KK6,KK7,KK8,KK9,KK10;
-//byte WW1,WW2,WW3,WW4,WW5,WW6,WW7,WW8,WW9,WW10;
 
-unsigned long CC; // megoldottam "UL" kell írni a az osztó szmok után  pl: 6 * 10000= 60000 de ő ezt "int" nek veszi a "10000UL" -el már jó 
+unsigned long CC; // megoldottam "UL" kell írni az osztó szmok után  pl: 6 * 10000= 60000 de ő ezt "int" nek veszi a "10000UL" -el már jó 
 byte CC1,CC2,CC3,CC4,CC5; 
-//unsigned long XX[]= {1,2,3,4,5,6,7,8,9,10,11,12};//teszt
 
 unsigned long IAO;//teszt
 unsigned long IIO[]= {1,2,3,4,5,6,7,8,9,10,11,12};//teszt
 unsigned long IVO[]= {1,2,3,4,5,6,7,8,9,10,11,12};//teszt
 byte HH;
 byte UU;
-
-//byte ZZ1,ZZ2,ZZ3,ZZ4,ZZ5;
-
-//byte SOK;
 byte MENUV;
 byte VISSZA;
-//byte QQ = 0;
-//byte ZZS = 1;
 byte BEARMSZ;
-
-
-
-//unsigned long FF;
-//unsigned long EE;
 byte DD = 0 ;
-//unsigned long IDOmpBen1,IDOmpBen2,IDOmpBen3,IDOmpBen4,IDOmpBen5,IDOmpBen6,IDOmpBen7,IDOmpBen8,IDOmpBen9,IDOmpBen10,IDOmpBen11,IDOmpBen12;
-
-
 
 byte PwmKitolt = 50;
 byte SENSOR ;
 byte PUFFKISENSOR ;
 
-
 const byte RELEKE = A0;    //rele keringeto haz felé
 const byte RELEFUTES = A1;    //elektromos fűtéshez a relé
 const byte Pityogo = A2;      //az 2es kemeneten relé ki lett kotve mert ott megy ki a pwm aszem a 11es lábon
 const byte PIROSLED = A3;    //piros led
-//A4 SDA I2C
-//A5 SDC I2C
-//A6 csak bement lehet
-//A7 csak bement lehet
-
 
 const byte MINUS = 10;      //gomb minusz
 const byte ENTER = 9;      //gomb enter
 const byte PLUS = 8;        //gomb plusz
-
-
-//https://omerk.github.io/lcdchargen/
-
-
 
 //ennyi lehet max, az valamelyik betüt kicseréltem 
 
@@ -318,8 +288,6 @@ byte ii[8] = {
 
 
 
-
-
 void setup()   /****** SETUP: RUNS ONCE ******/
 {
   // start serial port to show results
@@ -353,10 +321,6 @@ void setup()   /****** SETUP: RUNS ONCE ******/
   pinMode (encoder0PinB, INPUT);  //encoder
    
   
-  
-  
-  
-
 EEPROM_readAnything(33, BB); //mennyi időzités van beállítva
 EEPROM_readAnything(34, A);  //hol ált  a relé, behúzott, vagy elengedett
 EEPROM_readAnything(35, OraI);  //Óra Indul Elektromos Fűtés
@@ -367,22 +331,10 @@ EEPROM_readAnything(39, ELEKTFBEKI);
 EEPROM_readAnything(40, FUTESBEKI);
 EEPROM_readAnything(41, FOLYSZAK);
 EEPROM_readAnything(42, AA);
-//EEPROM_readAnything(43, SOK); //változott-e valami az időzitésben
-//44üres
-//45-tól 5tösével az időzitésben megadott idő másodpercben
-//104ig
-//110-114ig  Unix aktualis ido utolsó 5 karaktere
-    
-  
-  
-  
-  
 
-//kimenetek 0-ra húzása
 digitalWrite (RELEKE, LOW); 
 digitalWrite (RELEFUTES, LOW);
 
- 
   lcd.createChar(7, uu); //ű betű
   lcd.createChar(6, oo); //megbasz az áram jel
   lcd.createChar(5, aa); //á betű
@@ -391,40 +343,24 @@ digitalWrite (RELEFUTES, LOW);
   lcd.createChar(2, ee); //é betű
   lcd.createChar(1, oi); //ó betű
   
-  
-
   lcd.begin(20,4);
   lcd.clear();
-  //lcd.setCursor(6,0);
-  //lcd.print("Heged\007s");
-  //lcd.setCursor(4,1);
-  //lcd.print("Sufni_tuning");
-  //delay(2000);
-  //lcd.clear();
   lcd.setCursor(2,0);
   lcd.print("Creadted by HST"); 
-  //lcd.setCursor(1,2);
-  //lcd.print("hokusz22@gmail.com");
   lcd.setCursor(7,3);
   lcd.print(":-)");
   delay(2000);
   lcd.clear();  
-  
-  
-  
-
  
   wdt_reset();
   
-  
-  
- //venti frekvencia megnovelneni mert nyoszorog alap 490Hz nyomjuk meg phase-correct-re az 31372.55 Hz
+//venti frekvencia megnovelneni mert nyoszorog alap 490Hz nyomjuk meg phase-correct-re az 31372.55 Hz
 
 TCCR2B = TCCR2B & 0b11111000 | 0x03; //csak a 11-es es a 3-as labra vonatkozik, ha mas lab kell a TCCRxB kell valtoztattni a weboldal szerint
                                      // de ha a TCCR0B labbat akarod(5,6) akkor elmaszik az idozites ferkveniafuggon  delay(64000) or 64000 millis() ~ 1 second (Default: delay(1000) or 1000 millis() ~ 1 second)
 //http://playground.arduino.cc/Main/TimerPWMCheatsheet
   
-  /*Pins 11 and 3: controlled by timer 2 in phase-correct PWM mode (cycle length = 510)
+/*Pins 11 and 3: controlled by timer 2 in phase-correct PWM mode (cycle length = 510)
 Setting 	Divisor 	Frequency
 0x01 	 	1  		31372.55
 0x02 	 	8 	 	3921.16
@@ -436,22 +372,13 @@ Setting 	Divisor 	Frequency
 
 TCCR2B = (TCCR2B & 0b11111000) | <setting>;*/
 
-//ezt is szedd ki
-//rtc.adjust(DateTime(2018, 8, 18, 10, 59, 30));
-
-
-
-
 }//--(end setup )---
-
-
 
 void loop()   /****** LOOP: RUNS CONSTANTLY ******/
 {
  
 DateTime now = rtc.now();  
 dt = clock.getDateTime(); //RTC idő
-//clock.forceConversion();  //RTC hőmérséklet 
 sensors.requestTemperatures();  //ds18B20
 
 ORAAktualis = dt.hour;
@@ -460,21 +387,12 @@ SecAktualis = dt.second;
 UniX = dt.unixtime;
 ardup = millis();
 
-//Serial.println(ardup);
-
 if ( ardup >  604800000UL ){
     asm volatile ("  jmp 0");   //soft reset
     }
 
-//float RTCTemp = clock.readTemperature();
-
-
-
-//if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == HIGH && digitalRead(MINUS) == LOW)
 if (digitalRead(ENTER) == HIGH)
   {
-    
-       
     lcd.clear();
           lcd.print("Engedd el !!!");
           delay(2000);
@@ -489,8 +407,6 @@ if (digitalRead(ENTER) == HIGH)
             lcd.print("Elektromos Fu.Idoz");
             lcd.setCursor(2,2);
             lcd.print("Haz Fu.Idozito");
-            
-            
             do
             {              
                     ZSIK = digitalRead(encoder0PinA);
@@ -545,12 +461,6 @@ if (digitalRead(ENTER) == HIGH)
             }while(digitalRead(ENTER) == LOW);
           delay(1000);
           
-          
-          
-          
-          
-//innen service menu
-//innen service menu de benne kell lenni az elozo menuben, mert alapbol nem megy              
 if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS) == HIGH)                  
    {       
      lcd.clear();
@@ -654,8 +564,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  delay(500);
                                  
                                  
-                                 
-                                 
                                   do
                                 { 
                               lcd.setCursor(0,1);
@@ -687,7 +595,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  }while(digitalRead(ENTER) == LOW); 
                                  delay(500);
                                  
-                                 
                                   do
                                 { 
                               lcd.setCursor(6,1);
@@ -708,7 +615,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                     if (perc > 59){ perc = 1; }  
                                      }
           
-          
                                     if (digitalRead(MINUS) == HIGH)
                                       {
                                         perc = perc - 1 ;
@@ -724,7 +630,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                 //Serial.println("-----sadsda");
 
 
-                                
                                  do
                                  {
                               lcd.setCursor(0,0);
@@ -753,8 +658,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  lcd.clear();
                                  delay(500);
                                 
-                                 
-                             
                               
                                  do
                                 {
@@ -784,8 +687,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  lcd.clear();
                                  delay(500);
                                  
-                                 
-                                 
                                  do
                                 { 
                               lcd.setCursor(0,0);
@@ -812,8 +713,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  
                                  lcd.clear();
                                  delay(500);
-                                 
-                                 
                                  
                                  
                                  do
@@ -878,8 +777,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  delay(500);
                                  
                                  
-                          
-                                 
                   }while(digitalRead(ENTER) == LOW);                  
                   lcd.clear();
                   lcd.print("Vissza az elozo menube");
@@ -942,7 +839,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                     EEPROM.write(20,PUFFMAX);
                     delay(500);
               
-              
                     
                                lcd.clear();
                                 do
@@ -981,7 +877,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  }
                                   encoder0PinALast = ZSIK;
                               
-                 
                  
                                  }while(digitalRead(ENTER) == LOW);
                                  }while(digitalRead(ENTER) == LOW); 
@@ -1040,8 +935,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  delay(500);
                                  
                                  
-                                 
-                                 
                                  do
                                  {
                               lcd.setCursor(0,0);
@@ -1077,7 +970,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                   encoder0PinALast = ZSIK;
                               
                  
-                 
                                  }while(digitalRead(ENTER) == LOW);
                                  }while(digitalRead(ENTER) == LOW);
                                  delay(5);
@@ -1088,8 +980,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                  delay(500);
                                  
                                  
-                              
-         
            do
            {
             lcd.setCursor(0,0);
@@ -1130,9 +1020,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
               delay(500);
               
           
-     
-       
-   
             lcd.clear();
           do
           {  
@@ -1171,9 +1058,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
           EEPROM.write(5,KOLLEKTORB);
           delay(500);
           
-          
-           
-                
           
           lcd.clear();
            do
@@ -1215,8 +1099,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
                                    lcd.print(" ");
                                   }    
                                   
-                                  
-          
           }while(digitalRead(ENTER) == LOW);               
           }while(digitalRead(ENTER) == LOW); 
            delay(5);
@@ -1224,7 +1106,6 @@ if (digitalRead(ENTER) == HIGH && digitalRead(PLUS) == LOW && digitalRead(MINUS)
            delay(500);  
          
                       
-                                  
              }while(digitalRead(ENTER) == LOW);
              lcd.clear();
              wdt_enable (WDTO_8S);
@@ -1240,8 +1121,6 @@ if(MENUV == 2)
           delay(500); 
           valI = 0;
           digitalWrite (RELEFUTES, LOW);  
-          
-         
           
      do
      {
@@ -1293,7 +1172,6 @@ if(MENUV == 2)
           delay(500);
         
           
-       
         if ( ELEKTFBEKI == 1 )
         {
          lcd.clear();
@@ -1319,7 +1197,6 @@ if(MENUV == 2)
          do
           { 
           
-        
            ZSIK = digitalRead(encoder0PinA);
            if ((encoder0PinALast == LOW) && (ZSIK == HIGH)) 
                  {
@@ -1912,8 +1789,6 @@ if(MENUV == 2)
           
           teszt++;
           
-          
-          
          EEPROM_readAnything(teszt, PERC);  
           
           do
@@ -2193,25 +2068,6 @@ if(MENUV == 2)
 } //MENUV == 3 vege  
   
   
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-  
-    
-    
-    
-    
     
  
 } //if ENTER   vége  
@@ -2343,8 +2199,6 @@ if (KOLLM >= SENSOR + 5 )
 
 
 
-
-
 //napkollektor keringető feltételek
 
 //   60        5          55      60        55           30          55      80 
@@ -2408,8 +2262,6 @@ if ( SENSOR >= PUFFKISENSOR || PF4M >= PUFFMAX )
     }
 
 
-
-
 if (val == 1)
 {
 lcd.setCursor(9,3);
@@ -2440,9 +2292,6 @@ lcd.setCursor(9,3);
 }  
 
 
-
-
-
 //*******************************************************************************************
 //fűtés keringető feltételek
 //+ időztés
@@ -2459,7 +2308,6 @@ if ( FUTESBEKI == 1 ) //A1 if kezd
  if ( (SecAktualis >= 50 && SecAktualis < 59) && B != 1)
        {
          B = 0;
-         //Serial.println("!!VPerc Vesz!!! Olvasas!!");
 
        }
      
@@ -2493,19 +2341,15 @@ if ( FUTESBEKI == 1 ) //A1 if kezd
               n = n + 5;}
               
           B = 1;
-  // Serial.println("Sima Olvasas!!");
        
         for (m = 1; m <= 12; m = m +1)
           {
            IIO[m] = (long)((OraIF[m] * 3600UL) + (PercIF[m] *60)) ;
-            //Serial.print("Indul: ");Serial.println(IIO[m]);
             
             IVO[m] = (long)((OraVF[m] * 3600UL) + (PercVF[m] * 60));
-           //Serial.print("Vege: ");Serial.println(IVO[m]);
           }
     
      IAO = (long)((ORAAktualis * 3600UL) + (PercAktualis * 60));
-     //Serial.print("OraAktualis ");Serial.println(IAO);   
 
 
 
@@ -2513,8 +2357,6 @@ if ( FUTESBEKI == 1 ) //A1 if kezd
           {
             
             
-            //Serial.print("(");Serial.print(IAO);Serial.print(">=");Serial.print(IIO[m]);Serial.print("&&");Serial.print(IAO);Serial.print("<=");Serial.print(IVO[m]);Serial.print(")");Serial.print("&&");Serial.print(BEKI[m]);Serial.print("==");Serial.println("1");
-            //delay(500);delay(500);
             if ( (IAO >= IIO[m] && IAO < IVO[m]) && BEKI[m] == 1 )
                 {
                   if ( PF4M >= PUFFIT1B && PF2M >= PUFFIKB ){
@@ -2527,7 +2369,6 @@ if ( FUTESBEKI == 1 ) //A1 if kezd
                       A = 1;
                       AA = m ;   
                       
-                     // Serial.println("------V1-------");                 
                 }
                             
               if (m < BB )
@@ -2540,7 +2381,6 @@ if ( FUTESBEKI == 1 ) //A1 if kezd
                     AA = m ;
                     VISSZA = 0;
                     //AramSZ = 0;
-                    //Serial.println("BBBBBBBBBBBBBBBBBBB:");
                  } 
                   }
                   
@@ -2552,7 +2392,6 @@ if ( FUTESBEKI == 1 ) //A1 if kezd
                     A = 0;
                     AA = m ;
                     VISSZA = 0;
-                    //Serial.println("CCCCCCCCCCCCCCcc:");
                  } 
                   }    
                   
@@ -2626,8 +2465,6 @@ if ( FUTESBEKI == 1 ) //A1 if kezd
 
 //szakaszos(vége)---------------------------------------------------------------------------------------------------------
 
-
-
 wdt_reset(); 
 
 //allandó ha nincs időzítés(kezd)-------------------------------------------------------------------------------------------------
@@ -2642,7 +2479,6 @@ if ( FUTESBEKI == 0 )
   lcd.print("  ");
   lcd.setCursor(9,2);
   lcd.print("F\007tes:BE FF");
- // AramSZ = 0;
   
 }
 
@@ -2660,18 +2496,11 @@ if ( PF4M < PUFFIT1B || PF2M < PUFFIKB )
 //allandó ha nincs időzítés(vége)--------------------------------------------------------------------------------------
 
 
-
-
-
 //--------------------------------------------------------------------------------------
 //Elektromos fűtéshez a relé
 
 //időzités
           //****************************************
-
-
-
-
    
           
 if (ELEKTFBEKI == 1)
@@ -2686,14 +2515,9 @@ if (ELEKTFBEKI == 1)
          EEPROM_readAnything(38, PercVegeElektromosFutes);
          
           
-         IIO2 = (long)((OraIndulElektromosFutes * 3600UL) + (PercIndulElektromosFutes *60)) ;
-         //Serial.print("Indul: ");Serial.println(IIO2);
-         
-         IVO2 = (long)((OraVegeElektromosFutes * 3600UL) + (PercVegeElektromosFutes * 60));
-         //Serial.print("Vege: ");Serial.println(IVO2);
-         
+         IIO2 = (long)((OraIndulElektromosFutes * 3600UL) + (PercIndulElektromosFutes *60)) ;         
+         IVO2 = (long)((OraVegeElektromosFutes * 3600UL) + (PercVegeElektromosFutes * 60));         
          IAO2 = (long)((ORAAktualis * 3600UL) + (PercAktualis * 60));
-         //Serial.print("OraAktualis ");Serial.println(IAO2);
          
          if ( IAO2 >= IIO2 && IAO2 < IVO2  )
                 {
@@ -2712,7 +2536,6 @@ if ( PF3M < PUFFIT2B  && PF4M < PUFFMAX && valI == 1)
       lcd.setCursor(9, 1);
       lcd.print("F");
       valB = 1;
-      //Serial.println("EL=1 BEkapcs");
     }
            
             
@@ -2722,7 +2545,6 @@ if ( PF3M >= PUFFIT2B + 10 || PF4M >= PUFFMAX || valI == 0)
      lcd.setCursor(9, 1);
      lcd.print(" ");
      valB = 0;
-     //Serial.println("EL=1 KIkapcs");
     }
 
 
@@ -2734,66 +2556,10 @@ if (valI == 1 && valB == 1)
    lcd.print("F");
  }
 
-         
-         
-         
-         
-             
- 
- 
  
           
 }          
-/*if (ELEKTFBEKI == 1)
-{
-  
-  
-    if ( ORAAktualis == OraI && PercAktualis == PercI )
-      {
-        valI = 1;       
-       // AramSZ = 0;
-      }
 
-      if ( ORAAktualis == OraV && PercAktualis == PercV)
-        {
-         valI = 0;
-         //AramSZ = 0;
-        }
-              
-        
-if ( PF3M < PUFFIT2B  && PF4M < PUFFMAX && valI == 1)
-            {
-              digitalWrite (RELEFUTES, HIGH);
-              lcd.setCursor(9, 1);
-              lcd.print("F");
-              valB = 1;
-              //Serial.println("EL=1 BEkapcs");
-            }
-           
-            
-if ( PF3M >= PUFFIT2B + 10 || PF4M >= PUFFMAX || valI == 0)
-             {
-                digitalWrite (RELEFUTES, LOW);
-                lcd.setCursor(9, 1);
-                lcd.print(" ");
-                valB = 0;
-                //Serial.println("EL=1 KIkapcs");
-             }
-
-if (valI == 1 && valB == 1) 
- {
-   lcd.setCursor(9, 1);
-   lcd.print(" ");
-   lcd.setCursor(9, 1);
-   lcd.print("F");
- }
-
-             
-             
-}
-//Serial.println(ELEKTFBEKI);
-
-*/
 
 if (ELEKTFBEKI == 0)
 {
@@ -2807,7 +2573,6 @@ if (ELEKTFBEKI == 0)
               lcd.setCursor(9, 1);
               lcd.print("F");
               valA = 1;
-              //Serial.println("EL=0 BEkapcs");
             }
            
 
@@ -2817,7 +2582,6 @@ if ( PF3M >= PUFFIT2B + 10 || PF4M >= PUFFMAX )
                 lcd.setCursor(9, 1);
                 lcd.print(" ");
                 valA = 0;
-                //Serial.println("EL=0 KIkapcs");
              }
 
 
@@ -2828,112 +2592,10 @@ if (valA == 1)
    lcd.setCursor(9, 1);
    lcd.print("F");
  }             
-             
-             
-  
 }
 
-             
-//-----------------------------------------------------------------------
-
-
-
-//ezt szed ki ha vége a tesztnek
- /* lcd.setCursor(16, 3);
-  byte mint = now.minute();
-   if (mint < 10)
-   {
-     lcd.setCursor(16, 3);
-     lcd.print("0");
-   }
-   lcd.print(now.minute(), DEC);
-   
-   lcd.setCursor(18, 3);
-  byte sec = now.second();
-   if (sec < 10)
-   {
-     lcd.setCursor(18, 3);
-     lcd.print("0");
-   }
-   lcd.print(now.second(), DEC);*/                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                   
-
-
-
-
-KL++;
-KLA = KL / 5;
-
-//  kiírás a kijelzőre
-
-  delay(100);
-  lcd.setCursor(0, 0);
-  lcd.print("PT1:");
-  printTemperature(PT4);  
-  lcd.setCursor(0, 1);
-  lcd.print("PT2:");
-  printTemperature(PT3);
-  lcd.setCursor(0, 2);
-  lcd.print("PK:");
-  printTemperature(PK2); 
-  lcd.setCursor(0, 3);
-  lcd.print("PA:");
-  printTemperature(PA1);
-  if ( KL == (KLA * 5) )
-  {
-    lcd.setCursor(11, 0);
-    byte hour = now.hour();
-   if (hour < 10)
-   {
-     lcd.print("0");
-   }
-    lcd.print(now.hour(), DEC);
-    lcd.setCursor(13,0);
-    lcd.print(":");
-    
-    lcd.setCursor(14, 0);
-    byte minute = now.minute();
-    if (minute < 10)
-       {
-         lcd.print("0");
-       }
-         lcd.print(now.minute(), DEC);
-         lcd.setCursor(16, 0);
-         lcd.print("    ");
-  }
-  else
-  {  
-  lcd.setCursor(11, 0);
-  lcd.print("K\003l:");
-  printTemperature(KINT);
-  }
-  
-  lcd.setCursor(11, 1);
-  lcd.print("Kol:");
-  printTemperature(KOLL);
-  delay(1000);
-  
-  
-  
-  
-  
-  
-wdt_reset(); 
-
-
-
-/*Serial.print(KL);
-Serial.print("---");
-Serial.print(KOLLM);
-Serial.print("---");
-Serial.print(PwmKitolt);
-Serial.print("---");
-Serial.println(KOLLEKTORB);*/
-
-
 
 wdt_reset(); 
-
-
 
 if ( KL == (KLA * 5)  )
 {
@@ -2941,116 +2603,6 @@ digitalWrite(led, HIGH);
 }
 else{
 digitalWrite(led, LOW);  }
-
-
-/*
-if (KL == 101) //101volt
-{ 
- 
-  lcd.clear();
-  KL = 0;
-  
-  //lcd.setCursor(0,0);
-  //lcd.print(clock.dateFormat("H:i ", dt));
-  
-  //delay(3000);
-  //lcd.clear();
-  
-lcd.setCursor(0,0);
-  byte hour = now.hour();
-   if (hour < 10)
-   {
-     lcd.print("0");
-   }
-    lcd.print(now.hour(), DEC);
-    
-    
-   lcd.setCursor(2,0);
-    lcd.print(":");
-  
-  lcd.setCursor(3,0);
-  byte minute = now.minute();
-   if (minute < 10)
-   {
-     lcd.print("0");
-   }
-   lcd.print(now.minute(), DEC);
-   
-   
-    if (hour == 0 && minute == 1)  //hogy ejfelkor rendesen irja ki a napot
-    {
-      b = b +1;
-      
-      if (b > 35)
-      {
-        lcd.clear();
-        b = 0;
-      }
-     //Serial.println(b);
-    }
-    else
-    {
-      b = 0;
-    }
-    
-       
-  lcd.setCursor(0,1);
-    lcd.print(now.year(), DEC);
-  
-  lcd.setCursor(4,1);
-    lcd.print("-");
-  
-  
-  lcd.setCursor(5,1);
-  byte month = now.month();
-   if (month < 10)
-   {
-     lcd.print("0");
-   }
-    lcd.print(now.month(), DEC);
-    
-   lcd.setCursor(7,1);
-    lcd.print("-");
-     
-  lcd.setCursor(8,1);  
-    lcd.print(now.day(), DEC);
-    
-    
-    
-    
-  int dow = now.dayOfTheWeek();                  
-  lcd.setCursor(0,2);
-  switch(dow){
-     case 1:
-     lcd.print("Hetfo");
-     break;
-     case 2:
-     lcd.print("Kedd");
-     break;
-     case 3:
-     lcd.print("Szerda");
-     break;
-     case 4:
-     lcd.print("Csutortok");
-     break;
-     case 5:
-     lcd.print("P\002ntek");
-     break;
-     case 6:
-     lcd.print("Szombat");
-     break;
-     case 0:
-     lcd.print("Vasarnap");
-     
-     break;}
- 
-  delay(3000);
-  lcd.clear();
-  
-  
-    
-}
-*/
 
 
 if ( KL >= 230){
@@ -3063,7 +2615,6 @@ wdt_reset();
    
   
 }//--(end main loop )---
-/*-----( Declare User-written Functions )-----*/
 void printTemperature(DeviceAddress deviceAddress)
 {
 
@@ -3138,13 +2689,11 @@ void NMV2()
 void FutesBE()
 {
   digitalWrite (RELEKE, HIGH);
-  //Serial.println("FutesKer:BE");
 }
 
 void FutesKI()
 {
   digitalWrite (RELEKE, LOW);
-  //Serial.println("FutesKer:KI");
 }
 
 
