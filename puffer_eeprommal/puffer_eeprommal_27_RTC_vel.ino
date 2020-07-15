@@ -2699,19 +2699,11 @@ void FutesKI()
 
 void Pity()
 {
-    tone(Pityogo, 1000); // Send 1KHz sound signal...
+    tone(Pityogo, 1000);
     delay(50);  
-    noTone(Pityogo);     // Stop sound...
-    delay(50);        // ...for 1sec
-    tone(Pityogo, 1000); // Send 1KHz sound signal...
+    noTone(Pityogo);
     delay(50);
-    noTone(Pityogo);     // Stop sound...
+    tone(Pityogo, 1000);
+    delay(50);
+    noTone(Pityogo);
 }
-
-
-
-
-
-
-
-//*********( THE END )******
